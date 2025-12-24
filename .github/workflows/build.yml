@@ -1,0 +1,90 @@
+name: Build Project
+run-name: Project AutoBuilder
+on: [pull_request, push]
+jobs:
+  Build-Windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.13.7
+      uses: actions/setup-python@v5 
+      with:
+        python-version: "3.13.7"
+        architecture: "x64"
+        cache: "pip"
+
+    - name: Install Requirements
+      run: "pip install -r requirements.txt"
+
+    - name: Compile Project
+      run: "python -m nuitka --mode=onefile --output-dir output --output-filename windows_amd64_{{ github.sha }} --deployment dvd-mouse.pyw"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v6.0.0
+      with:
+        name: windows_amd64_{{ github.sha }}
+        path: output/windows_amd64_{{ github.sha }}
+
+    - name: Delete garbage
+      run: "rm output/windows_amd64_{{ github.sha }}"
+
+  Build-MacOS:
+    runs-on: macos-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+  
+    - name: Set up Python 3.13.7
+      uses: actions/setup-python@v5 
+      with:
+        python-version: "3.13.7"
+        architecture: "arm64"
+        cache: "pip"
+  
+    - name: Install Requirements
+      run: "pip install -r requirements.txt"
+
+    - name: Compile Project
+      run: "python -m nuitka --mode=onefile --output-dir output --output-filename macOS_arm64_{{ github.sha }} --deployment dvd-mouse.pyw"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v6.0.0
+      with:
+        name: macos_arm64_{{ github.sha }}
+        path: output/macos_arm64_{{ github.sha }}
+
+    - name: Delete garbage
+      run: "rm output/macos_arm64_{{ github.sha }}"
+
+  Build-Linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+  
+    - name: Set up Python 3.13.7
+      uses: actions/setup-python@v5 
+      with:
+        python-version: "3.13.7"
+        architecture: "x64"
+        cache: "pip"
+  
+    - name: Install Requirements
+      run: "pip install -r requirements.txt"
+
+    - name: Compile Project
+      run: "python -m nuitka --mode=onefile --output-dir output --output-filename linux_amd64_{{ github.sha }} --deployment dvd-mouse.pyw"
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v6.0.0
+      with:
+        name: linux_amd64_{{ github.sha }}
+        path: output/linux_amd64_{{ github.sha }}
+
+    - name: Delete garbage
+      run: "rm output/linux_amd64_{{ github.sha }}"
