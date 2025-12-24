@@ -20,16 +20,16 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="windows_amd64_{{ github.sha }}" --assume-yes-for-downloads --deployment dvd-mouse.pyw '
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --assume-yes-for-downloads --deployment dvd-mouse.pyw '
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
       with:
-        name: windows_amd64_{{ github.sha }}
-        path: output/windows_amd64_{{ github.sha }}
+        name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
+        path: output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
 
     - name: Delete garbage
-      run: 'rm "output/windows_amd64_{{ github.sha }}"'
+      run: 'rm "output\${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}.exe"'
 
   Build-MacOS:
     runs-on: macos-latest
@@ -49,16 +49,16 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: 'python -m nuitka --mode=app --output-dir="output" --output-filename="macOS_arm64_{{ github.sha }}" --deployment dvd-mouse.pyw'
+      run: 'python -m nuitka --mode=app --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --deployment dvd-mouse.pyw'
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
       with:
-        name: macos_arm64_{{ github.sha }}
-        path: output/macos_arm64_{{ github.sha }}
+        name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
+        path: output/**
 
     - name: Delete garbage
-      run: 'rm "output/macos_arm64_{{ github.sha }}"'
+      run: 'rm -rf output/'
 
   Build-Linux:
     runs-on: ubuntu-latest
@@ -78,13 +78,13 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="linux_amd64_{{ github.sha }}" --deployment dvd-mouse.pyw'
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --deployment dvd-mouse.pyw'
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
       with:
-        name: linux_amd64_{{ github.sha }}
-        path: output/linux_amd64_{{ github.sha }}
+        name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
+        path: output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
 
     - name: Delete garbage
-      run: 'rm "output/linux_amd64_{{ github.sha }}"'
+      run: 'rm "${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}"'
