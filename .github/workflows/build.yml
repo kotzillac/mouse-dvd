@@ -29,7 +29,7 @@ jobs:
         path: output/windows_amd64_{{ github.sha }}
 
     - name: Delete garbage
-      run: "rm output/windows_amd64_{{ github.sha }}"
+      run: 'rm "output/windows_amd64_{{ github.sha }}"'
 
   Build-MacOS:
     runs-on: macos-latest
@@ -58,7 +58,7 @@ jobs:
         path: output/macos_arm64_{{ github.sha }}
 
     - name: Delete garbage
-      run: "rm output/macos_arm64_{{ github.sha }}"
+      run: 'rm "output/macos_arm64_{{ github.sha }}"'
 
   Build-Linux:
     runs-on: ubuntu-latest
@@ -87,4 +87,4 @@ jobs:
         path: output/linux_amd64_{{ github.sha }}
 
     - name: Delete garbage
-      run: "rm output/linux_amd64_{{ github.sha }}"
+      run: 'rm "output/linux_amd64_{{ github.sha }}"'
