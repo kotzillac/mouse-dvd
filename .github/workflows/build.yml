@@ -20,7 +20,7 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: "python -m nuitka --mode=onefile dvd-mouse.pyw --output-dir=output --output-filename=windows_amd64_{{ github.sha }} --deployment"
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="windows_amd64_{{ github.sha }}" --deployment dvd-mouse.pyw '
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
@@ -49,7 +49,7 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: "python -m nuitka --mode=onefile dvd-mouse.pyw --output-dir=output --output-filename=macOS_arm64_{{ github.sha }} --deployment"
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="macOS_arm64_{{ github.sha }}" --deployment dvd-mouse.pyw'
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
@@ -78,7 +78,7 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: "python -m nuitka --mode=onefile dvd-mouse.pyw --output-dir=output --output-filename=linux_amd64_{{ github.sha }} --deployment"
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="linux_amd64_{{ github.sha }}" --deployment dvd-mouse.pyw'
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
