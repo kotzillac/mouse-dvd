@@ -1,10 +1,38 @@
 name: Project Autobuild
-run-name: ProjectAutobuilder
+run-name: Project Autobuilder
 on: [push]
 
 jobs:
-  lint-and-test:
-    runs-on: ubuntu-latest
+  Build-Windows:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+  
+    - name: Set up Python 3.13.7
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13.7"
+        architecture: "{{ runner.arch }}"
+        cache: "pip"
+  
+    - name: Install Requirements
+      run: "pip install -r requirements.txt"
+
+    - name: Compile Project
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --deployment dvd-mouse.pyw'
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v6.0.0
+      with:
+        name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
+        path: output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}.exe
+
+    - name: Delete garbage
+      run: 'rm "${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}.exe"'
+  
+  Build-Macos:
+    runs-on: macos-latest
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -13,14 +41,14 @@ jobs:
       uses: actions/setup-python@v5 
       with:
         python-version: "3.13.7"
-        architecture: "arm64"
+        architecture: "${{ runner.arch }}"
         cache: "pip"
   
     - name: Install Requirements
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: 'python -m nuitka --mode=app --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --deployment dvd-mouse.pyw'
+      run: 'python -m nuitka --mode=app --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --assume-yes-for-downloads --deployment dvd-mouse.pyw'
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
@@ -33,7 +61,6 @@ jobs:
 
   Build-Linux:
     runs-on: ubuntu-latest
-    if: always()
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -42,7 +69,7 @@ jobs:
       uses: actions/setup-python@v5 
       with:
         python-version: "3.13.7"
-        architecture: "x64"
+        architecture: "{{ runner.arch }}"
         cache: "pip"
   
     - name: Install Requirements
