@@ -27,9 +27,6 @@ jobs:
       with:
         name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
         path: output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}.exe
-
-    - name: Delete garbage
-      run: 'rm "${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}.exe"'
   
   Build-Macos:
     runs-on: macos-latest
@@ -56,9 +53,6 @@ jobs:
         name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
         path: output/**
 
-    - name: Delete garbage
-      run: 'rm -rf output/'
-
   Build-Linux:
     runs-on: ubuntu-latest
     steps:
@@ -83,6 +77,3 @@ jobs:
       with:
         name: ${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
         path: output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
-
-    - name: Delete garbage
-      run: 'rm "${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}"'
