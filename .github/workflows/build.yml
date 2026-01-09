@@ -20,7 +20,7 @@ jobs:
       run: "pip install -r requirements.txt"
 
     - name: Compile Project
-      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --deployment dvd-mouse.pyw'
+      run: 'python -m nuitka --mode=onefile --output-dir="output" --output-filename="${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}" --assume-yes-for-downloads --deployment dvd-mouse.pyw'
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v6.0.0
@@ -85,4 +85,4 @@ jobs:
         path: output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}
 
     - name: Delete garbage
-      run: 'rm "${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}"'
+      run: 'rm "output/${{ runner.os }}_${{ runner.arch }}_${{ github.sha }}"'
